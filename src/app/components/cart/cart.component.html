@@ -1,0 +1,70 @@
+<p-button (onClick)="sidebarVisible = true" [rounded]="true" severity="contrast" icon="pi pi-shopping-cart" size="large" />
+
+<p-sidebar [(visible)]="sidebarVisible" position="right" styleClass="w-30rem p-4">
+    <h2 class="m-0">My Cart</h2>
+
+    <p-dataView #dv [value]="products">
+        <ng-template pTemplate="list" let-products>
+            <div class="grid grid-nogutter">
+                <div class="col-12" *ngFor="let item of products; let first = first" class="col-12">
+                    <div class="flex flex-column sm:flex-row sm:align-items-center py-4 gap-3"
+                        [ngClass]="{ 'border-top-1 surface-border': !first }">
+                        <div class="md:w-10rem relative">
+                            <img class="block xl:block mx-auto border-round w-full h-8rem" [src]="item.image"
+                                [alt]="item.name" />
+                        </div>
+                        <div class="flex flex-column flex-1 gap-4">
+                            <div class="flex flex-row md:flex-column justify-content-between">
+                                <div class="flex align-items-center justify-content-between">
+                                    <span class="font-medium text-secondary text-sm">{{ item.category }}</span>
+                                    <p-button icon="pi pi-trash" [rounded]="true" [text]="true" [raised]="true"
+                                        severity="danger" />
+                                </div>
+                                <div class="text-lg font-medium text-900 mt-2">{{ item.name }}</div>
+                            </div>
+                            <div class="flex align-items-center justify-content-between">
+                                <div class="flex justify-content-center">
+                                    <p-inputNumber [(ngModel)]="item.quantity" [style]="{'width': '50px'}"
+                                        [showButtons]="true" [min]="1" buttonLayout="horizontal"
+                                        spinnerMode="horizontal" inputId="horizontal"
+                                        decrementButtonClass="p-button-secondary"
+                                        incrementButtonClass="p-button-secondary" incrementButtonIcon="pi pi-plus"
+                                        decrementButtonIcon="pi pi-minus" [inputStyle]="{'width': '45px'}" />
+                                </div>
+                                <div class="flex justify-content-center align-items-end gap-2">
+                                    <span class="text-xl font-semibold text-900">{{ '$' + item.price }}</span>
+                                    <span class="text-xs text-500">{{ 'x' + item.quantity }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <h2>Payment Summary</h2>
+                    <div class="flex flex-column">
+                        <div class="flex align-items-center justify-content-between mb-3">
+                            <span>Subtotal</span>
+                            <span>$178</span>
+                        </div>
+                        <div class="flex align-items-center justify-content-between mb-3">
+                            <span>Total Tax</span>
+                            <span>$1.75</span>
+                        </div>
+                        <div class="border-top-1 surface-border flex align-items-center justify-content-between">
+                            <h3>Total</h3>
+                            <span class="text-green-600 font-semibold">$179.75</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <h2>Delivery Address</h2>
+                    <p-dropdown [options]="addresses" [(ngModel)]="selectedAddress" [styleClass]="'w-full'" optionLabel="name" placeholder="Select an Adress" />
+                </div>
+                <div class="col-12 my-6">
+                    <p-toast />
+                    <p-button (onClick)="sendOrder()" label="Order Now" [rounded]="true" severity="contrast" [styleClass]="'w-full'" size="large"/>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
+</p-sidebar>
