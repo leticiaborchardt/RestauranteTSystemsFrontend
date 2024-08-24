@@ -122,6 +122,9 @@ export class ProductsComponent {
   }
 
   removeProduct(id: number): void {
+    // for test
+    this.products = this.products.filter(product => product.id !== id);
+
     this.showFeedbackMessage('success', 'Success', 'Item removed successfully!');
   }
 
