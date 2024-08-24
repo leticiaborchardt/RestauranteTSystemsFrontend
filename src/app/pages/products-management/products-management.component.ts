@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
-import { DataViewModule } from 'primeng/dataview';
-import { TagModule } from 'primeng/tag';
-import { RatingModule } from 'primeng/rating';
-import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
-import { Product } from '../../models/product.model';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { DataViewModule } from 'primeng/dataview';
+import { RatingModule } from 'primeng/rating';
+import { TagModule } from 'primeng/tag';
+import { Product } from '../../models/product.model';
+import { AddProductComponent } from '../../components/add-product/add-product.component';
 
 @Component({
-  selector: 'app-products',
+  selector: 'app-products-management',
   standalone: true,
   imports: [
     DataViewModule,
@@ -16,12 +17,13 @@ import { RouterLink } from '@angular/router';
     RatingModule,
     ButtonModule,
     CommonModule,
-    RouterLink
+    RouterLink,
+    AddProductComponent
   ],
-  templateUrl: './products.component.html',
-  styleUrl: './products.component.scss'
+  templateUrl: './products-management.component.html',
+  styleUrl: './products-management.component.scss'
 })
-export class ProductsComponent {
+export class ProductsManagementComponent {
   // mock
   products: Product[] = [
     {
