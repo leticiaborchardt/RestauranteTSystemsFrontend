@@ -1,1 +1,40 @@
-<p>products works!</p>
+<p-dataView #dv [value]="products" [rows]="8" [paginator]="true" layout="grid">
+    <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center">
+            <h1>{{ isManagingProducts ? 'Update Menu' : 'Explore Our Best Menu'}}</h1>
+            <p-button *ngIf="!isManagingProducts" (onClick)="manageProducts()" icon="pi pi-file-edit" label="Manage Menu" rounded="true" severity="contrast" />
+            <app-add-product *ngIf="isManagingProducts"></app-add-product>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="grid">
+        <div class="grid grid-nogutter p-2">
+            <div class="col-12 sm:col-6 md:col-4 xl:col-3 p-2" *ngFor="let item of products; let first = first">
+                <div class="p-4 border-1 surface-border surface-card border-round flex flex-column">
+                    <div class="relative mx-auto h-10rem w-full">
+                        <img class="border-round w-full h-full" [src]="item.image" [alt]="item.name" />
+                    </div>
+                    <div class="pt-4">
+                        <div class="flex flex-column gap-2">
+                            <span class="font-medium text-secondary text-sm">{{ item.category }}</span>
+                            <div class="text-lg font-medium text-900 mt-1">{{ item.name }}</div>
+                            <p class="text-secondary text-sm">{{item.description}}</p>
+                        </div>
+                        <div *ngIf="!isManagingProducts" class="flex justify-content-between mt-4">
+                            <span class="text-2xl font-semibold">{{ '$' + item.price }}</span>
+                            <div *ngIf="isProductOnCart(item.id); else addToCartButton">
+                                <p-button disabled="true" icon="pi pi-cart-plus" label="Added to cart" rounded="true" severity="contrast" />
+                            </div>
+                            <ng-template #addToCartButton>
+                                <p-button (onClick)="addProductToCart(item)" icon="pi pi-shopping-cart" label="Order" rounded="true" />
+                            </ng-template>
+                        </div>
+                        <div *ngIf="isManagingProducts" class="flex justify-content-end mt-4">
+                            <p-button (onClick)="removeProduct(item.id)" icon="pi pi-trash" text="true" raised="true" severity="danger" label="Remove" rounded="true" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-dataView>
+<p-toast />

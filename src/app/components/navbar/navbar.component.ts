@@ -11,7 +11,14 @@ import { CartComponent } from '../cart/cart.component';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [MenubarModule, BadgeModule, AvatarModule, InputTextModule, RippleModule, CartComponent, CommonModule],
+  imports: [
+    MenubarModule, 
+    AvatarModule, 
+    InputTextModule, 
+    RippleModule, 
+    CartComponent,
+    CommonModule
+  ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })

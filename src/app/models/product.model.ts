@@ -1,8 +1,12 @@
 export interface Product {
     id: number
-    name: string
+    name: string,
+    description: string,
     category: string
     image: string,
-    price: number,
-    quantity: number
+    price: number
+}
+
+export interface ProductCart extends Product {
+    quantity: number;
 }
