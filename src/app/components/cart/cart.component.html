@@ -1,7 +1,9 @@
 <p-button (onClick)="sidebarVisible = true" [rounded]="true" severity="contrast" icon="pi pi-shopping-cart" size="large" />
 
 <p-sidebar [(visible)]="sidebarVisible" position="right" styleClass="w-30rem p-4">
-    <h2 class="m-0">My Cart</h2>
+    <ng-template pTemplate="header">
+        <h2 class="m-0">My Cart</h2>
+    </ng-template>
 
     <p-dataView #dv [value]="products">
         <ng-template pTemplate="list" let-products>
@@ -10,15 +12,13 @@
                     <div class="flex flex-column sm:flex-row sm:align-items-center py-4 gap-3"
                         [ngClass]="{ 'border-top-1 surface-border': !first }">
                         <div class="md:w-10rem relative">
-                            <img class="block xl:block mx-auto border-round w-full h-8rem" [src]="item.image"
-                                [alt]="item.name" />
+                            <img class="block xl:block mx-auto border-round w-full h-8rem" [src]="item.image" [alt]="item.name" />
                         </div>
                         <div class="flex flex-column flex-1 gap-4">
                             <div class="flex flex-row md:flex-column justify-content-between">
                                 <div class="flex align-items-center justify-content-between">
                                     <span class="font-medium text-secondary text-sm">{{ item.category }}</span>
-                                    <p-button icon="pi pi-trash" [rounded]="true" [text]="true" [raised]="true"
-                                        severity="danger" />
+                                    <p-button icon="pi pi-trash" [rounded]="true" [text]="true" [raised]="true" severity="danger" />
                                 </div>
                                 <div class="text-lg font-medium text-900 mt-2">{{ item.name }}</div>
                             </div>

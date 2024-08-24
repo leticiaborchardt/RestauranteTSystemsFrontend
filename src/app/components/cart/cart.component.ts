@@ -10,7 +10,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { MessageService } from 'primeng/api';
 import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
-import { Product } from '../../models/product.model';
+import { ProductCart } from '../../models/product.model';
 
 @Component({
   selector: 'app-cart',
@@ -24,7 +24,7 @@ export class CartComponent {
   sidebarVisible: boolean = false;
 
   // mock
-  products: Product[] = [
+  products: ProductCart[] = [
     {
       id: 1,
       name: 'Classic Burguer',
