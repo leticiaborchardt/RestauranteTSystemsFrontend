@@ -7,11 +7,6 @@ export interface Product {
     price: number
 }
 
-export interface ProductCart {
-    id: number
-    name: string,
-    category: string
-    image: string,
-    price: number,
-    quantity: number
+export interface ProductCart extends Product {
+    quantity: number;
 }

@@ -4,11 +4,12 @@ import { TagModule } from 'primeng/tag';
 import { RatingModule } from 'primeng/rating';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
-import { Product } from '../../models/product.model';
+import { Product, ProductCart } from '../../models/product.model';
 import { RouterLink } from '@angular/router';
 import { AddProductComponent } from '../../components/add-product/add-product.component';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-products',
@@ -28,7 +29,7 @@ import { ToastModule } from 'primeng/toast';
   providers: [MessageService]
 })
 export class ProductsComponent {
-  // mock
+  // mock data
   products: Product[] = [
     {
       id: 1,
@@ -114,14 +115,26 @@ export class ProductsComponent {
 
   isManagingProducts: boolean = false;
 
-  constructor(private messageService: MessageService) {}
+  constructor(private cartService: CartService, private messageService: MessageService) {}
 
   manageProducts(): void {
     this.isManagingProducts = true;
   }
 
   removeProduct(id: number): void {
-    this.showFeedbackMessage('success', 'Success', 'Item removed successfully!')
+    this.showFeedbackMessage('success', 'Success', 'Item removed successfully!');
+  }
+
+  addProductToCart(product: Product): void {
+    var productCart = product as ProductCart;
+    productCart.quantity = 1;
+
+    this.cartService.addProduct(productCart);
+    this.showFeedbackMessage('success', 'Success', 'Item added to cart');
+  }
+
+  isProductOnCart(id: number): boolean {
+    return this.cartService.getProductById(id) != null;
   }
 
   showFeedbackMessage(severity: string, title: string, message: string) {

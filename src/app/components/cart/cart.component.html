@@ -1,12 +1,14 @@
-<p-button (onClick)="sidebarVisible = true" [rounded]="true" severity="contrast" icon="pi pi-shopping-cart" size="large" />
+<p-button (onClick)="sidebarVisible = true" [rounded]="true" severity="contrast" size="large" >
+    <i class="pi pi-shopping-cart text-xl pr-2" pBadge value="{{cartItemCount}}" severity="success"></i>
+</p-button>
 
 <p-sidebar [(visible)]="sidebarVisible" position="right" styleClass="w-30rem p-4">
     <ng-template pTemplate="header">
         <h2 class="m-0">My Cart</h2>
     </ng-template>
 
-    <p-dataView #dv [value]="products">
-        <ng-template pTemplate="list" let-products>
+    <p-dataView *ngIf="products.length >= 1; else noProductsFoundMessage" [value]="products">
+        <ng-template pTemplate="list">
             <div class="grid grid-nogutter">
                 <div class="col-12" *ngFor="let item of products; let first = first" class="col-12">
                     <div class="flex flex-column sm:flex-row sm:align-items-center py-4 gap-3"
@@ -18,7 +20,7 @@
                             <div class="flex flex-row md:flex-column justify-content-between">
                                 <div class="flex align-items-center justify-content-between">
                                     <span class="font-medium text-secondary text-sm">{{ item.category }}</span>
-                                    <p-button icon="pi pi-trash" [rounded]="true" [text]="true" [raised]="true" severity="danger" />
+                                    <p-button (onClick)="removeFromCart(item.id)" icon="pi pi-trash" [rounded]="true" [text]="true" [raised]="true" severity="danger" />
                                 </div>
                                 <div class="text-lg font-medium text-900 mt-2">{{ item.name }}</div>
                             </div>
@@ -44,7 +46,7 @@
                     <div class="flex flex-column">
                         <div class="flex align-items-center justify-content-between mb-3">
                             <span>Subtotal</span>
-                            <span>$178</span>
+                            <span>{{ getTotalPrice() | currency:'USD':'symbol' }}</span>
                         </div>
                         <div class="flex align-items-center justify-content-between mb-3">
                             <span>Total Tax</span>
@@ -52,7 +54,7 @@
                         </div>
                         <div class="border-top-1 surface-border flex align-items-center justify-content-between">
                             <h3>Total</h3>
-                            <span class="text-green-600 font-semibold">$179.75</span>
+                            <span class="text-green-600 font-semibold">{{ (getTotalPrice() + 1.75) | currency:'USD':'symbol' }}</span>
                         </div>
                     </div>
                 </div>
@@ -67,4 +69,11 @@
             </div>
         </ng-template>
     </p-dataView>
+
+    <ng-template #noProductsFoundMessage>
+        <h3 class="text-center">No items added to cart</h3>
+        <a href="/products" class="flex justify-content-center">
+            <p-button label="Check the Menu" [rounded]="true" severity="danger" />
+        </a>
+    </ng-template>
 </p-sidebar>

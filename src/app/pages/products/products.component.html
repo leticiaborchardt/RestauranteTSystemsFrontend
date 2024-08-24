@@ -6,7 +6,7 @@
             <app-add-product *ngIf="isManagingProducts"></app-add-product>
         </div>
     </ng-template>
-    <ng-template pTemplate="grid" let-products>
+    <ng-template pTemplate="grid">
         <div class="grid grid-nogutter p-2">
             <div class="col-12 sm:col-6 md:col-4 xl:col-3 p-2" *ngFor="let item of products; let first = first">
                 <div class="p-4 border-1 surface-border surface-card border-round flex flex-column">
@@ -21,7 +21,12 @@
                         </div>
                         <div *ngIf="!isManagingProducts" class="flex justify-content-between mt-4">
                             <span class="text-2xl font-semibold">{{ '$' + item.price }}</span>
-                            <p-button icon="pi pi-shopping-cart" label="Order" rounded="true" />
+                            <div *ngIf="isProductOnCart(item.id); else addToCartButton">
+                                <p-button disabled="true" icon="pi pi-cart-plus" label="Added to cart" rounded="true" severity="contrast" />
+                            </div>
+                            <ng-template #addToCartButton>
+                                <p-button (onClick)="addProductToCart(item)" icon="pi pi-shopping-cart" label="Order" rounded="true" />
+                            </ng-template>
                         </div>
                         <div *ngIf="isManagingProducts" class="flex justify-content-end mt-4">
                             <p-button (onClick)="removeProduct(item.id)" icon="pi pi-trash" text="true" raised="true" severity="danger" label="Remove" rounded="true" />
