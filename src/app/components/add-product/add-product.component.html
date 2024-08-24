@@ -35,7 +35,7 @@
         </div>
         <div class="flex justify-content-end gap-3 mt-5">
             <p-button label="Cancel" rounded="true" severity="secondary" (onClick)="dialogVisible = false" />
-            <p-button label="Save" rounded="true" severity="success" [disabled]="productForm.invalid" (onClick)="onSubmit()" />
+            <p-button type="submit" label="Save" rounded="true" severity="success" [disabled]="productForm.invalid" (onClick)="submitProduct()" />
         </div>
     </form>
 </p-dialog>

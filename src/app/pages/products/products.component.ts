@@ -6,6 +6,9 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { Product } from '../../models/product.model';
 import { RouterLink } from '@angular/router';
+import { AddProductComponent } from '../../components/add-product/add-product.component';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-products',
@@ -16,10 +19,13 @@ import { RouterLink } from '@angular/router';
     RatingModule,
     ButtonModule,
     CommonModule,
-    RouterLink
+    RouterLink,
+    AddProductComponent,
+    ToastModule
   ],
   templateUrl: './products.component.html',
-  styleUrl: './products.component.scss'
+  styleUrl: './products.component.scss',
+  providers: [MessageService]
 })
 export class ProductsComponent {
   // mock
@@ -105,4 +111,20 @@ export class ProductsComponent {
       price: 7.00
     }
   ];
+
+  isManagingProducts: boolean = false;
+
+  constructor(private messageService: MessageService) {}
+
+  manageProducts(): void {
+    this.isManagingProducts = true;
+  }
+
+  removeProduct(id: number): void {
+    this.showFeedbackMessage('success', 'Success', 'Item removed successfully!')
+  }
+
+  showFeedbackMessage(severity: string, title: string, message: string) {
+    this.messageService.add({ severity: severity, summary: title, detail: message });
+  }
 }

@@ -1,10 +1,9 @@
 <p-dataView #dv [value]="products" [rows]="8" [paginator]="true" layout="grid">
     <ng-template pTemplate="header">
         <div class="flex justify-content-between align-items-center">
-            <h1>Explore Our Best Menu</h1>
-            <a routerLink="/products-management">
-                <p-button icon="pi pi-file-edit" label="Manage Menu" rounded="true" severity="contrast" />
-            </a>
+            <h1>{{ isManagingProducts ? 'Update Menu' : 'Explore Our Best Menu'}}</h1>
+            <p-button *ngIf="!isManagingProducts" (onClick)="manageProducts()" icon="pi pi-file-edit" label="Manage Menu" rounded="true" severity="contrast" />
+            <app-add-product *ngIf="isManagingProducts"></app-add-product>
         </div>
     </ng-template>
     <ng-template pTemplate="grid" let-products>
@@ -20,9 +19,12 @@
                             <div class="text-lg font-medium text-900 mt-1">{{ item.name }}</div>
                             <p class="text-secondary text-sm">{{item.description}}</p>
                         </div>
-                        <div class="flex justify-content-between mt-4">
+                        <div *ngIf="!isManagingProducts" class="flex justify-content-between mt-4">
                             <span class="text-2xl font-semibold">{{ '$' + item.price }}</span>
                             <p-button icon="pi pi-shopping-cart" label="Order" rounded="true" />
+                        </div>
+                        <div *ngIf="isManagingProducts" class="flex justify-content-end mt-4">
+                            <p-button (onClick)="removeProduct(item.id)" icon="pi pi-trash" text="true" raised="true" severity="danger" label="Remove" rounded="true" />
                         </div>
                     </div>
                 </div>
@@ -30,3 +32,4 @@
         </div>
     </ng-template>
 </p-dataView>
+<p-toast />

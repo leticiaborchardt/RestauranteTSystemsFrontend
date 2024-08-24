@@ -12,6 +12,7 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-add-product',
@@ -26,7 +27,8 @@ import { ToastModule } from 'primeng/toast';
     ButtonModule,
     CommonModule,
     DialogModule,
-    ToastModule
+    ToastModule,
+    TooltipModule
   ],
   templateUrl: './add-product.component.html',
   styleUrl: './add-product.component.scss',
@@ -54,14 +56,15 @@ export class AddProductComponent implements OnInit {
   ngOnInit() {
     this.productForm.addControl('text', new FormControl<string | null>(null));
     this.productForm.addControl('number', new FormControl<number | null>(null));
-
   }
 
-  onSubmit() {
+  submitProduct() {
     if (this.productForm.valid) {
       this.product = this.productForm.value as Product;
-      this.showFeedbackMessage('success', 'Success', 'Item created successfully')
+      this.showFeedbackMessage('success', 'Success', 'Item created successfully!');
       this.dialogVisible = false;
+    } else {
+      this.showFeedbackMessage('danger', 'Ops', 'Please fill in the required data!');
     }
   }
 
