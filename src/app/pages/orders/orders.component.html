@@ -10,8 +10,8 @@
                     <div class="flex gap-3 justify-content-between">
                         <h1 class="text-lg m-0 hidden lg:block"># {{order.id}}</h1>
                         <div>
-                            <span class="font-medium text-sm">{{ formatDate(order.date) }}</span>
-                            <div class="text-lg font-bold text-900 mt-2 mb-4">Customer: {{ order.user.name }}</div>
+                            <span class="font-medium text-sm">{{ formatDate(order.createdAt) }}</span>
+                            <div class="text-lg font-bold text-900 mt-2 mb-4">Customer: {{ order.customerName }}</div>
                             <div><b>Address:</b> {{ order.address }} </div>
                         </div>
                         <h1 class="text-lg m-0 lg:hidden"># {{order.id}}</h1>

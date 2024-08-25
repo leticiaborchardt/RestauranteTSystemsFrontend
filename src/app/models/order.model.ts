@@ -1,5 +1,3 @@
-import { User } from "./user.model"
-
 export interface ProductOrder {
     id: number,
     name: string,
@@ -9,9 +7,9 @@ export interface ProductOrder {
 
 export interface Order {
     id: number
-    user: User
+    customerName: string
+    address: string
     status: string
-    date: Date,
-    products: ProductOrder[],
-    address: String
+    createdAt: Date,
+    products: ProductOrder[]
 }

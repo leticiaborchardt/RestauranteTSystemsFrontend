@@ -59,11 +59,17 @@
                     </div>
                 </div>
                 <div class="col-12">
+                    <h2>Customer Name</h2>
+                    <input type="text" pInputText [(ngModel)]="customerName" placeholder="Name" class="w-full" />
+                    <p *ngIf="customerName.length < 1" class="text-red-300 text-sm p-1 m-0">Please, fill in this field</p>
+                </div>
+                <div class="col-12">
                     <h2>Delivery Address</h2>
-                    <p-dropdown [options]="addresses" [(ngModel)]="selectedAddress" [styleClass]="'w-full'" optionLabel="name" placeholder="Select an Adress" />
+                    <input type="text" pInputText [(ngModel)]="address" placeholder="Address" class="w-full" />
+                    <p *ngIf="address.length < 1" class="text-red-300 text-sm p-1 m-0">Please, fill in this field</p>
                 </div>
                 <div class="col-12 my-6">
-                    <p-button (onClick)="sendOrder()" label="Order Now" [rounded]="true" severity="contrast" [styleClass]="'w-full'" size="large"/>
+                    <p-button (onClick)="sendOrder()" [disabled]="!validateInputs()" label="Order Now" [rounded]="true" severity="contrast" [styleClass]="'w-full'" size="large"/>
                 </div>
             </div>
         </ng-template>

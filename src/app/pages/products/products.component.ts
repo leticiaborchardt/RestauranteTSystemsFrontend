@@ -55,6 +55,8 @@ export class ProductsComponent implements OnInit {
     this.productService.deleteProduct(id).subscribe({
       next: () => {
         this.products = this.products.filter(product => product.id !== id);
+        this.cartService.removeProduct(id);
+
         this.showFeedbackMessage('success', 'Success', 'Item removed successfully!');
       },
       error: () => this.showFeedbackMessage('error', 'Error', 'Could not remove item, please try again later.')

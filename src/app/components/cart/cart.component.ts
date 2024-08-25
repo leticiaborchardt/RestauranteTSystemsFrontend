@@ -15,6 +15,7 @@ import { CartService } from '../../services/cart.service';
 import { BadgeModule } from 'primeng/badge';
 import { OrderService } from '../../services/order.service';
 import { Order } from '../../models/order.model';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-cart',
@@ -28,6 +29,7 @@ import { Order } from '../../models/order.model';
     TagModule,
     FormsModule,
     InputNumberModule,
+    InputTextModule,
     DropdownModule,
     BadgeModule,
     CommonModule
@@ -40,8 +42,9 @@ export class CartComponent implements OnInit {
   sidebarVisible: boolean = false;
   cartItemCount = 0;
   products: ProductCart[] = [];
-  addresses: string[] = [];
-  selectedAddress: string = "";
+  customerName: string = "";
+  address: string = "";
+  validInputs: boolean = false;
   order: Order | undefined;
 
   constructor(private cartService: CartService, private orderService: OrderService, private messageService: MessageService) { }
@@ -71,5 +74,9 @@ export class CartComponent implements OnInit {
     //   next: () => this.showFeedbackMessage('success', 'Success', 'Your order has been sent'),
     //   error: () => this.showFeedbackMessage('error', 'Error', 'Could not send the order, please try again later.')
     // })
+  }
+
+  validateInputs(): boolean {
+    return !(this.customerName.length < 1 || this.address.length < 1);
   }
 }
