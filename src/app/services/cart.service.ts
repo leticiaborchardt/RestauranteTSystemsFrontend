@@ -21,15 +21,39 @@ export class CartService {
 
   addProduct(product: ProductCart): void {
     const currentProducts = this.getProducts();
-    this.products.next([...currentProducts, product]);
+    const updatedCart = [...currentProducts, product];
+
+    this.products.next(updatedCart);
+    this.saveCart(updatedCart);
   }
 
   removeProduct(idProduct: number): void {
     const currentProducts = this.getProducts().filter(cartProduct => cartProduct.id !== idProduct);
     this.products.next(currentProducts);
+    this.saveCart(currentProducts);
+  }
+
+  saveCart(cart: ProductCart[]): void {
+    if (this.isBrowser()) {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+  }
+
+  loadCart(): void {
+    if (this.isBrowser()) {
+      const savedCart = localStorage.getItem('cart');
+      this.products.next(savedCart ? JSON.parse(savedCart) : []);
+    }
   }
 
   clearCart() {
     this.products.next([]);
+    if (this.isBrowser()) {
+      localStorage.removeItem('cart');
+    }
+  }
+
+  private isBrowser(): boolean {
+    return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
   }
 }
