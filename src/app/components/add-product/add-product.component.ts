@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
-import { Product } from '../../models/product.model';
+import { NewProduct } from '../../models/product.model';
 import { MessageService } from 'primeng/api';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { Category } from '../../models/category.model';
@@ -38,7 +38,7 @@ import { CategoryService } from '../../services/category.service';
 })
 export class AddProductComponent implements OnInit {
   productForm: FormGroup;
-  product: Product | undefined;
+  product: NewProduct | undefined;
   categoryOptions: Category[] = [];
   dialogVisible: boolean = false;
   sendingForm: boolean = false;
@@ -48,7 +48,7 @@ export class AddProductComponent implements OnInit {
       name: ['', Validators.required],
       description: ['', Validators.required],
       category: ['', Validators.required],
-      image: [''],
+      image: ['', Validators.required],
       price: [0, [Validators.required, Validators.min(0.1)]]
     });
   }
@@ -69,8 +69,8 @@ export class AddProductComponent implements OnInit {
   submitProduct() {
     if (this.productForm.valid) {
       this.sendingForm = true;
-      this.product = this.productForm.value as Product;
-
+      this.product = this.productForm.value as NewProduct;
+        
       this.productService.addProduct(this.product).subscribe({
         next: () => {
           this.showFeedbackMessage('success', 'Success', 'Item created successfully!');

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Product } from '../models/product.model';
+import { NewProduct, Product } from '../models/product.model';
 import { Observable } from 'rxjs';
 import { PagedResponse } from '../models/paged-response.model';
 
@@ -16,7 +16,7 @@ export class ProductService {
     return this.http.get<PagedResponse<Product>>(`${this.url}?page=${page}&size=${size}`);
   }
 
-  addProduct(product: Product): Observable<Product> {
+  addProduct(product: NewProduct): Observable<Product> {
     return this.http.post<Product>(this.url, product);
   }
 
