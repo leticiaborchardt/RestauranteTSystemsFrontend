@@ -10,6 +10,16 @@ export interface Order {
     customerName: string
     address: string
     status: string
-    createdAt: Date,
-    products: ProductOrder[]
+    createdAt: Date
+}
+
+export interface NewProductOrder {
+    id: number
+    quantity: number
+}
+
+export interface NewOrder {
+    customerName: string
+    address: string
+    products: NewProductOrder[]
 }
