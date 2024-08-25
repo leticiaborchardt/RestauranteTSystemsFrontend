@@ -19,7 +19,7 @@
                         <div class="flex flex-column flex-1 gap-4">
                             <div class="flex flex-column justify-content-between">
                                 <div class="flex align-items-center justify-content-between">
-                                    <span class="font-medium text-secondary text-sm">{{ item.category }}</span>
+                                    <span class="font-medium text-secondary text-sm">{{ item.category.name }}</span>
                                     <p-button (onClick)="removeFromCart(item.id)" icon="pi pi-trash" [rounded]="true" [text]="true" [raised]="true" severity="danger" />
                                 </div>
                                 <div class="text-lg font-medium text-900 mt-2">{{ item.name }}</div>

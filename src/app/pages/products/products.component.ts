@@ -65,11 +65,8 @@ export class ProductsComponent implements OnInit {
     var productCart = product as ProductCart;
     productCart.quantity = 1;
 
-    if (this.cartService.addProduct(productCart)) {
-      this.showFeedbackMessage('success', 'Success', 'Item added to cart');
-    } else {
-      this.showFeedbackMessage('error', 'Error', 'Could not add item to cart, please try again later.');
-    }
+    this.cartService.addProduct(productCart);
+    this.showFeedbackMessage('success', 'Success', 'Item added to cart');
   }
 
   onPageChange(event: any) {     

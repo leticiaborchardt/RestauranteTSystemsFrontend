@@ -66,14 +66,10 @@ export class CartComponent implements OnInit {
   }
 
   sendOrder(): void {
-    if (this.cartService.clearCart() == false) {
-      this.showFeedbackMessage('error', 'Error', 'Could not clear the cart.');
-    } else {
-      // // TODO based on API
-      // this.orderService.addOrder(this.order).subscribe({
-      //   next: () => this.showFeedbackMessage('success', 'Success', 'Your order has been sent'),
-      //   error: () => this.showFeedbackMessage('error', 'Error', 'Could not send the order, please try again later.')
-      // })
-    }
+    // // TODO based on API
+    // this.orderService.addOrder(this.order).subscribe({
+    //   next: () => this.showFeedbackMessage('success', 'Success', 'Your order has been sent'),
+    //   error: () => this.showFeedbackMessage('error', 'Error', 'Could not send the order, please try again later.')
+    // })
   }
 }

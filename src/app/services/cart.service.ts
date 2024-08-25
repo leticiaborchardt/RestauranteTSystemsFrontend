@@ -1,21 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ProductCart } from '../models/product.model';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  private url = 'http://localhost:8080/api/cart';
   private products = new BehaviorSubject<ProductCart[]>([]);
   cartProducts$ = this.products.asObservable();
 
-  constructor(private http: HttpClient) { }
-
-  loadCartProducts(): void {
-    this.http.get<ProductCart[]>(this.url).subscribe(response => this.products.next(response));
-  }
+  constructor() { }
 
   getProducts(): ProductCart[] {
     return this.products.getValue();
@@ -25,37 +19,17 @@ export class CartService {
     return this.getProducts().find(cartProduct => cartProduct.id === id) ?? null;
   }
 
-  addProduct(product: ProductCart): boolean {
-    this.http.post<any>(this.url, product).subscribe({
-      next: () => {
-        const currentProducts = this.getProducts();
-        this.products.next([...currentProducts, product]);
-
-        return true;
-      },
-      error: error => console.error(error)
-    });
-
-    return false;
+  addProduct(product: ProductCart): void {
+    const currentProducts = this.getProducts();
+    this.products.next([...currentProducts, product]);
   }
 
   removeProduct(idProduct: number): void {
-    this.http.delete<ProductCart[]>(`${this.url}/${idProduct}`).subscribe({
-      next: () => this.products.next(this.getProducts().filter(cartProduct => cartProduct.id !== idProduct)),
-      error: error => console.error(error)
-    }
-    );
+    const currentProducts = this.getProducts().filter(cartProduct => cartProduct.id !== idProduct);
+    this.products.next(currentProducts);
   }
 
-  clearCart(): boolean {
-    this.http.delete<ProductCart[]>(`${this.url}/clear`).subscribe({
-      next: () => {
-        this.products.next([]);
-        return true;
-      },
-      error: error => console.error(error)
-    });
-
-    return false;
+  clearCart() {
+    this.products.next([]);
   }
 }
