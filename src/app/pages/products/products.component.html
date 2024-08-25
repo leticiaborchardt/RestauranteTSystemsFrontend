@@ -32,7 +32,7 @@
                             </ng-template>
                         </div>
                         <div *ngIf="isManagingProducts" class="flex justify-content-end mt-4">
-                            <p-button (onClick)="removeProduct(item.id)" icon="pi pi-trash" text="true" raised="true" severity="danger" label="Remove" rounded="true" />
+                            <p-button (onClick)="confirmDeletion(item.id, $event)" icon="pi pi-trash" text="true" raised="true" severity="danger" label="Remove" rounded="true" />
                         </div>
                     </div>
                 </div>
@@ -41,3 +41,4 @@
     </ng-template>
 </p-dataView>
 <p-toast />
+<p-confirmDialog />

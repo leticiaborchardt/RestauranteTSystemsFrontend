@@ -7,10 +7,11 @@ import { CommonModule } from '@angular/common';
 import { Product, ProductCart } from '../../models/product.model';
 import { RouterLink } from '@angular/router';
 import { AddProductComponent } from '../../components/add-product/add-product.component';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { CartService } from '../../services/cart.service';
 import { ProductService } from '../../services/product.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-products',
@@ -23,11 +24,12 @@ import { ProductService } from '../../services/product.service';
     CommonModule,
     RouterLink,
     AddProductComponent,
-    ToastModule
+    ToastModule,
+    ConfirmDialogModule
   ],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
-  providers: [MessageService]
+  providers: [ConfirmationService, MessageService]
 })
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
@@ -35,7 +37,7 @@ export class ProductsComponent implements OnInit {
   productImageLoaded: boolean = true;
   isManagingProducts: boolean = false;
 
-  constructor(private productService: ProductService, private cartService: CartService, private messageService: MessageService) { }
+  constructor(private productService: ProductService, private confirmationService: ConfirmationService, private cartService: CartService, private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.getProducts(0, 10);
@@ -69,7 +71,21 @@ export class ProductsComponent implements OnInit {
     this.showFeedbackMessage('success', 'Success', 'Item added to cart');
   }
 
-  onPageChange(event: any) {     
+  confirmDeletion(productId: number, event: Event) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Are you sure that you want to remove this item from menu?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      rejectLabel: 'Cancel',
+      rejectButtonStyleClass: "p-button-text",
+      accept: () => {
+        this.removeProduct(productId);
+      }
+    });
+  }
+
+  onPageChange(event: any) {
     this.getProducts(event.first / event.rows, event.rows);
   }
 
