@@ -31,17 +31,22 @@ import { ProductService } from '../../services/product.service';
 })
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
+  totalRecords: number = 0;
+  productImageLoaded: boolean = true;
   isManagingProducts: boolean = false;
 
   constructor(private productService: ProductService, private cartService: CartService, private messageService: MessageService) { }
 
   ngOnInit(): void {
-    this.getProducts();
+    this.getProducts(0, 10);
   }
 
-  getProducts(): void {
-    this.productService.getProducts().subscribe({
-      next: (response) => this.products = response,
+  getProducts(page: number, size: number): void {
+    this.productService.getProducts(page, size).subscribe({
+      next: (response) => {
+        this.products = response.content;
+        this.totalRecords = response.totalElements;
+      },
       error: () => this.showFeedbackMessage('error', 'Error', 'Unable to load menu items, please try again later.')
     })
   }
@@ -65,6 +70,10 @@ export class ProductsComponent implements OnInit {
     } else {
       this.showFeedbackMessage('error', 'Error', 'Could not add item to cart, please try again later.');
     }
+  }
+
+  onPageChange(event: any) {     
+    this.getProducts(event.first / event.rows, event.rows);
   }
 
   isProductOnCart(id: number): boolean {

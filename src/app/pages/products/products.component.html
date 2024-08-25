@@ -1,4 +1,4 @@
-<p-dataView #dv [value]="products" [rows]="8" [paginator]="true" layout="grid">
+<p-dataView #dv [value]="products" [rows]="10" [paginator]="true" [totalRecords]="totalRecords" (onPage)="onPageChange($event)" [lazy]="true" layout="grid">
     <ng-template pTemplate="header">
         <div class="flex justify-content-between align-items-center">
             <h1>{{ isManagingProducts ? 'Update Menu' : 'Explore Our Best Menu'}}</h1>
@@ -10,12 +10,15 @@
         <div class="grid grid-nogutter p-2">
             <div class="col-12 sm:col-6 md:col-4 xl:col-3 p-2" *ngFor="let item of products; let first = first">
                 <div class="p-4 border-1 surface-border surface-card border-round flex flex-column">
-                    <div class="relative mx-auto h-10rem w-full">
-                        <img class="border-round w-full h-full" [src]="item.image" [alt]="item.name" />
+                    <div *ngIf="productImageLoaded" class="relative mx-auto h-10rem w-full">
+                        <img class="border-round w-full h-full" [src]="item.image" (error)="productImageLoaded = false" [alt]="item.name" />
+                    </div>
+                    <div *ngIf="!productImageLoaded" class="flex justify-content-center p-6">
+                        <i class="pi pi-image" style="font-size: 2em;"></i>
                     </div>
                     <div class="pt-4">
                         <div class="flex flex-column gap-2">
-                            <span class="font-medium text-secondary text-sm">{{ item.category }}</span>
+                            <span class="font-medium text-secondary text-sm">{{ item.category.name }}</span>
                             <div class="text-lg font-medium text-900 mt-1">{{ item.name }}</div>
                             <p class="text-secondary text-sm">{{item.description}}</p>
                         </div>

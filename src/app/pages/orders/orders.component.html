@@ -1,4 +1,4 @@
-<p-dataView #dv [value]="orders" [rows]="5" [paginator]="true">
+<p-dataView #dv [value]="orders" [paginator]="true" [totalRecords]="totalRecords" (onPage)="onPageChange($event)" [lazy]="true">
     <ng-template pTemplate="header">
         <h1>Orders</h1>
     </ng-template>

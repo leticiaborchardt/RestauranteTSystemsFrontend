@@ -27,19 +27,27 @@ import { ToastModule } from 'primeng/toast';
 })
 export class OrdersComponent implements OnInit {
   orders: Order[] = [];
+  totalRecords: number = 0;
   statusList: string[] = ['Ordered', 'Processing', 'Shipped', 'Delivered'];
 
   constructor(private orderService: OrderService, private messageService: MessageService) { }
 
   ngOnInit(): void {
-    this.getOrders();
+    this.getOrders(0, 10);
   }
 
-  getOrders(): void {
-    this.orderService.getOrders().subscribe({
-      next: (response) => this.orders = response,
+  getOrders(page: number, size: number): void {
+    this.orderService.getOrders(page, size).subscribe({
+      next: (response) => {
+        this.orders = response.content;
+        this.totalRecords = response.totalElements;
+      },
       error: () => this.showFeedbackMessage('error', 'Error', 'Unable to load orders, please try again later.')
     })
+  }
+
+  onPageChange(event: any) {     
+    this.getOrders(event.first / event.rows, event.rows);
   }
 
   formatDate(date: Date): string {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ProductCart } from '../models/product.model';
 import { HttpClient } from '@angular/common/http';
 
@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CartService {
-  private url = 'http://localhost:3000/'; // TODO: add correct url
+  private url = 'http://localhost:8080/api/cart';
   private products = new BehaviorSubject<ProductCart[]>([]);
   cartProducts$ = this.products.asObservable();
 
