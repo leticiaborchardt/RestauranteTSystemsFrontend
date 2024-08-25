@@ -63,6 +63,11 @@ export class CartComponent implements OnInit {
   }
 
   sendOrder() {
+    this.clearCart();
     this.showFeedbackMessage('success', 'Success', 'Your order has been sent')
+  }
+
+  clearCart() {
+    this.cartService.clearCart();
   }
 }
