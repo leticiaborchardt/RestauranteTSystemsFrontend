@@ -7,7 +7,8 @@
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
     [style]="{ width: '50vw' }" 
     [draggable]="false"
-    [resizable]="false">
+    [resizable]="false"
+    (onHide)="closeDialog()">
     <form [formGroup]="productForm">
         <div class="flex flex-column gap-5">
             <p-floatLabel>
@@ -32,10 +33,14 @@
                     cols="30"></textarea>
                 <label for="description">Description</label>
             </p-floatLabel>
+            <p-floatLabel>
+                <input type="text" pInputText formControlName="image" class="w-full" />
+                <label for="image">Image URL</label>
+            </p-floatLabel>
         </div>
         <div class="flex justify-content-end gap-3 mt-5">
-            <p-button label="Cancel" rounded="true" severity="secondary" (onClick)="dialogVisible = false" />
-            <p-button type="submit" label="Save" rounded="true" severity="success" [disabled]="productForm.invalid" (onClick)="submitProduct()" />
+            <p-button label="Cancel" rounded="true" severity="secondary" (onClick)="closeDialog()" />
+            <p-button type="submit" label="Save" rounded="true" severity="success" [disabled]="productForm.invalid || sendingForm" (onClick)="submitProduct()" />
         </div>
     </form>
 </p-dialog>

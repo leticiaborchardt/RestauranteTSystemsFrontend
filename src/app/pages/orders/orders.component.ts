@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Order, ProductOrder } from '../../models/order.model';
 import { DataViewModule } from 'primeng/dataview';
 import { ButtonModule } from 'primeng/button';
@@ -6,34 +6,49 @@ import { TagModule } from 'primeng/tag';
 import { TimelineModule } from 'primeng/timeline';
 import { CommonModule } from '@angular/common';
 import { format } from 'date-fns';
+import { OrderService } from '../../services/order.service';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [DataViewModule, ButtonModule, TagModule, TimelineModule, CommonModule],
+  imports: [
+    DataViewModule, 
+    ButtonModule, 
+    TagModule, 
+    TimelineModule, 
+    ToastModule, 
+    CommonModule
+  ],
   templateUrl: './orders.component.html',
-  styleUrl: './orders.component.scss'
+  styleUrl: './orders.component.scss',
+  providers: [MessageService]
 })
-export class OrdersComponent {
-  orders: Order[] = [
-    {
-      id: 1,
-      user: {
-        id: 101,
-        name: "John Snow",
-        email: "john@example.com"
-      },
-      status: "Ordered",
-      date: new Date(),
-      products: [
-        { id: 1, name: "Product 1", price: 10.0, quantity: 2 },
-        { id: 2, name: "Product 2", price: 20.0, quantity: 1 }
-      ],
-      address: 'Street 5558, City AB'
-    }
-  ];
-
+export class OrdersComponent implements OnInit {
+  orders: Order[] = [];
+  totalRecords: number = 0;
   statusList: string[] = ['Ordered', 'Processing', 'Shipped', 'Delivered'];
+
+  constructor(private orderService: OrderService, private messageService: MessageService) { }
+
+  ngOnInit(): void {
+    this.getOrders(0, 10);
+  }
+
+  getOrders(page: number, size: number): void {
+    this.orderService.getOrders(page, size).subscribe({
+      next: (response) => {
+        this.orders = response.content;
+        this.totalRecords = response.totalElements;
+      },
+      error: () => this.showFeedbackMessage('error', 'Error', 'Unable to load orders, please try again later.')
+    })
+  }
+
+  onPageChange(event: any) {     
+    this.getOrders(event.first / event.rows, event.rows);
+  }
 
   formatDate(date: Date): string {
     return format(date, 'MM/dd/yyyy - HH:mm');
@@ -56,5 +71,9 @@ export class OrdersComponent {
       default:
         return 'pi pi-check';
     }
+  }
+
+  showFeedbackMessage(severity: string, title: string, message: string) {
+    this.messageService.add({ severity: severity, summary: title, detail: message });
   }
 }
