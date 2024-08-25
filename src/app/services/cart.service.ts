@@ -28,4 +28,8 @@ export class CartService {
     const currentProducts = this.getProducts().filter(cartProduct => cartProduct.id !== idProduct);
     this.products.next(currentProducts);
   }
+
+  clearCart() {
+    this.products.next([]);
+  }
 }

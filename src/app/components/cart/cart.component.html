@@ -2,7 +2,7 @@
     <i class="pi pi-shopping-cart text-xl pr-2" pBadge value="{{cartItemCount}}" severity="success"></i>
 </p-button>
 
-<p-sidebar [(visible)]="sidebarVisible" position="right" styleClass="w-30rem p-4">
+<p-sidebar [(visible)]="sidebarVisible" position="right" styleClass="md:w-30rem p-4">
     <ng-template pTemplate="header">
         <h2 class="m-0">My Cart</h2>
     </ng-template>
@@ -17,7 +17,7 @@
                             <img class="block xl:block mx-auto border-round w-full h-8rem" [src]="item.image" [alt]="item.name" />
                         </div>
                         <div class="flex flex-column flex-1 gap-4">
-                            <div class="flex flex-row md:flex-column justify-content-between">
+                            <div class="flex flex-column justify-content-between">
                                 <div class="flex align-items-center justify-content-between">
                                     <span class="font-medium text-secondary text-sm">{{ item.category }}</span>
                                     <p-button (onClick)="removeFromCart(item.id)" icon="pi pi-trash" [rounded]="true" [text]="true" [raised]="true" severity="danger" />
@@ -63,7 +63,6 @@
                     <p-dropdown [options]="addresses" [(ngModel)]="selectedAddress" [styleClass]="'w-full'" optionLabel="name" placeholder="Select an Adress" />
                 </div>
                 <div class="col-12 my-6">
-                    <p-toast />
                     <p-button (onClick)="sendOrder()" label="Order Now" [rounded]="true" severity="contrast" [styleClass]="'w-full'" size="large"/>
                 </div>
             </div>
@@ -76,4 +75,6 @@
             <p-button label="Check the Menu" [rounded]="true" severity="danger" />
         </a>
     </ng-template>
+
+    <p-toast />
 </p-sidebar>
