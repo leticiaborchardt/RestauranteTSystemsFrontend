@@ -20,8 +20,8 @@ export class OrderService {
     if (customerName) params = params.set('customer_name', customerName);
     if (address) params = params.set('address', address);
     if (status) params = params.set('status', status);
-    if (fromTime) params = params.set('from_time', fromTime.toISOString().slice(0, 19));
-    if (toTime) params = params.set('to_time', toTime.toISOString().slice(0, 19));
+    if (fromTime) params = params.set('from_time', new Date(fromTime.getTime() - fromTime.getTimezoneOffset() * 60 * 1000).toISOString().slice(0, 19));
+    if (toTime) params = params.set('to_time', new Date(toTime.getTime() - toTime.getTimezoneOffset() * 60 * 1000).toISOString().slice(0, 19));
     if (sort && sortType) params = params.set('sort', `${sort},${sortType}`);
     
     return this.http.get<PagedResponse<Order>>(this.url, { params });

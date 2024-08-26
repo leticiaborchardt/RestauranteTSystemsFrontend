@@ -74,10 +74,7 @@ export class OrdersComponent implements OnInit {
 
         ordersResponse.forEach(order => {
           this.orderService.getOrderProducts(order.id).subscribe({
-            next: (res) => order.products = res,
-            error: (error) => {
-              throw new Error(error)
-            }
+            next: (res) => order.products = res
           })
         });
 
