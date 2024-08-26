@@ -1,27 +1,27 @@
-# Restaurante
+# Restaurante - T-Academy
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
+This is a project made with Angular, which consumes an API built with Java SpringBoot. ([See the API](https://github.com/MattKings27/restaurante-app))
 
-## Development server
+The project consists of a system for a restaurant, where the user has the option to view the menu, perform various filtering operations, and also add or remove a dish. The user can add items to their cart, create a new order, and manage those orders.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Basic Setup
 
-## Code scaffolding
+**Clonning the Repository**
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```bash
+git clone https://github.com/leticiaborchardt/RestauranteTSystemsFrontend.git
+```
 
-## Build
+**Running the Project**
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Open the terminal and run `ng serve` for a dev server and navigate to `http://localhost:4200/`.
 
 ## Further help
 
+This project was generated with Angular CLI version 18.2.0.
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Developed By
+- Letícia Borchardt (https://github.com/leticiaborchardt)
+- Eleuvano Silva de Sousa (https://github.com/leovano)
+- Matheus Reis (https://github.com/MattKings27)
