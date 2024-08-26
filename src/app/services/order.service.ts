@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NewOrder, Order, OrderProduct } from '../models/order.model';
@@ -12,8 +12,19 @@ export class OrderService {
 
   constructor(private http: HttpClient) { }
 
-  getOrders(page: number, size: number): Observable<PagedResponse<Order>> {
-    return this.http.get<PagedResponse<Order>>(`${this.url}?page=${page}&size=${size}`);
+  getOrders(page: number, size: number, customerName?: string, address?: string, status?: string, fromTime?: Date, toTime?: Date, sort?: string, sortType?: string): Observable<PagedResponse<Order>> {
+    let params = new HttpParams()
+      .set('page', page)
+      .set('size', size);
+
+    if (customerName) params = params.set('customer_name', customerName);
+    if (address) params = params.set('address', address);
+    if (status) params = params.set('status', status);
+    if (fromTime) params = params.set('from_time', fromTime.toISOString().slice(0, 19));
+    if (toTime) params = params.set('to_time', toTime.toISOString().slice(0, 19));
+    if (sort && sortType) params = params.set('sort', `${sort},${sortType}`);
+    
+    return this.http.get<PagedResponse<Order>>(this.url, { params });
   }
 
   getOrderProducts(orderId: number): Observable<OrderProduct[]> {

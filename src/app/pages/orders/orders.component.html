@@ -1,6 +1,44 @@
 <p-dataView #dv [value]="orders" [paginator]="true" [totalRecords]="totalRecords" (onPage)="onPageChange($event)" [lazy]="true">
     <ng-template pTemplate="header">
         <h1>Orders</h1>
+        <div class="flex flex-wrap align-items-end gap-3 my-4">
+            <div class="flex flex-column gap-2 w-full md:w-auto">
+                <label for="customerNameSearch">Customer</label>            
+                <input [(ngModel)]="customerNameSearch" type="text" pInputText name="customerNameSearch" class="w-full" />
+            </div>
+            <div class="flex flex-column gap-2 w-full md:w-auto">
+                <label for="addressSearch">Address</label>            
+                <input [(ngModel)]="addressSearch" type="text" pInputText name="addressSearch" class="w-full" />
+            </div>
+            <div class="flex flex-column gap-2 w-full md:w-15rem">
+                <label for="statusSearch">Status</label>     
+                <p-dropdown [options]="statusList" [(ngModel)]="statusSearch" [showClear]="true" placeholder="Select a Status" [styleClass]="'w-full'" />
+            </div>
+            <div class="flex flex-column gap-2 w-full md:w-auto">
+                <label for="fromTimeSearch">From time</label>       
+                <p-calendar 
+                    inputId="fromTimeSearch" 
+                    [(ngModel)]="fromTimeSearch" 
+                    [showTime]="true" 
+                    [hourFormat]="'24'"
+                    [styleClass]="'w-full'"/>     
+            </div>
+            <div class="flex flex-column gap-2 w-full md:w-auto">
+                <label for="fromTimeSearch">To time</label>       
+                <p-calendar 
+                    inputId="toTimeSearch" 
+                    [(ngModel)]="toTimeSearch" 
+                    [showTime]="true" 
+                    [hourFormat]="'24'"
+                    [styleClass]="'w-full'"/>     
+            </div>
+            <div class="flex flex-column gap-2 w-full md:w-15rem">
+                <label for="sortSearch">Sort by</label>     
+                <p-dropdown [options]="sortOptions" [(ngModel)]="sortSearch" [showClear]="true" optionLabel="label" placeholder="Select an option" [styleClass]="'w-full'" />
+            </div>
+            <p-button (onClick)="getOrders(0, 10)" icon="pi pi-filter" label="Filter" />
+            <p-button (onClick)="clearFilters()" icon="pi pi-times" label="Clear" severity="secondary" />
+        </div>
     </ng-template>
     <ng-template pTemplate="list">
         <div class="grid grid-nogutter">
@@ -20,8 +58,7 @@
                         <h3>Resume</h3>
                         <ul class="pl-4">
                             <li *ngFor="let orderProduct of order.products">
-                                {{orderProduct.quantity}}x {{orderProduct.product.name}} - {{(orderProduct.product.price *
-                                orderProduct.quantity) | currency:'USD':'symbol'}}
+                                {{orderProduct.quantity}}x {{orderProduct.product.name}} - {{orderProduct.product.price | currency:'USD':'symbol'}}
                             </li>
                         </ul>
                         <div><b>Total:</b> {{getTotalPrice(order.products) | currency:'USD':'symbol'}}</div>
