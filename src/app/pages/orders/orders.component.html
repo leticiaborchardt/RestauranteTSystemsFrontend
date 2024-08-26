@@ -7,32 +7,32 @@
             <div class="col-12" *ngFor="let order of orders; let first = first" class="col-12">
                 <div class="flex flex-column lg:flex-row justify-content-between lg:align-items-center p-4 gap-2 lg:gap-6"
                     [ngClass]="{ 'border-top-1 surface-border': !first }">
-                    <div class="flex gap-3 justify-content-between">
+                    <div class="flex gap-3 flex-1">
                         <h1 class="text-lg m-0 hidden lg:block"># {{order.id}}</h1>
                         <div>
-                            <span class="font-medium text-sm">{{ formatDate(order.date) }}</span>
-                            <div class="text-lg font-bold text-900 mt-2 mb-4">Customer: {{ order.user.name }}</div>
+                            <span class="font-medium text-sm">{{ formatDate(order.createdAt) }}</span>
+                            <div class="text-lg font-bold text-900 mt-2 mb-4">Customer: {{ order.customerName }}</div>
                             <div><b>Address:</b> {{ order.address }} </div>
                         </div>
                         <h1 class="text-lg m-0 lg:hidden"># {{order.id}}</h1>
                     </div>
-                    <div>
+                    <div class="flex-1">
                         <h3>Resume</h3>
                         <ul class="pl-4">
-                            <li *ngFor="let productOrder of order.products">
-                                {{productOrder.quantity}}x {{productOrder.name}} - {{(productOrder.price *
-                                productOrder.quantity) | currency:'USD':'symbol'}}
+                            <li *ngFor="let orderProduct of order.products">
+                                {{orderProduct.quantity}}x {{orderProduct.product.name}} - {{(orderProduct.product.price *
+                                orderProduct.quantity) | currency:'USD':'symbol'}}
                             </li>
                         </ul>
                         <div><b>Total:</b> {{getTotalPrice(order.products) | currency:'USD':'symbol'}}</div>
                     </div>
-                    <p-timeline [value]="statusList" layout="horizontal" styleClass="customized-timeline">
+                    <p-timeline [value]="statusList" layout="horizontal" styleClass="customized-timeline flex-1">
                         <ng-template pTemplate="marker" let-status>
                             <span
                                 class="p-2 border-circle shadow-3 {{status == order.status ? 'bg-teal-400 text-white' : ''}} {{getStatusIcon(status)}}"></span>
                         </ng-template>
                         <ng-template pTemplate="content" let-status>
-                            <div class="text-sm {{status == order.status ? 'font-bold' : ''}}">
+                            <div class="text-sm capitalize {{status == order.status ? 'font-bold' : ''}}">
                                 {{status}}
                             </div>
                         </ng-template>

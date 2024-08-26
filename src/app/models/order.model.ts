@@ -1,17 +1,29 @@
-import { User } from "./user.model"
+import { Product } from "./product.model";
 
-export interface ProductOrder {
-    id: number,
-    name: string,
-    price: number,
+export interface OrderProduct {
+    product: Product,
     quantity: number
 }
 
 export interface Order {
     id: number
-    user: User
+    customerName: string
+    address: string
     status: string
-    date: Date,
-    products: ProductOrder[],
-    address: String
+    createdAt: Date
+}
+
+export interface OrderProducts extends Order {
+    products: OrderProduct[]
+}
+
+export interface NewProductOrder {
+    id: number
+    quantity: number
+}
+
+export interface NewOrder {
+    customerName: string
+    address: string
+    products: NewProductOrder[]
 }

@@ -14,7 +14,8 @@ import { ProductCart } from '../../models/product.model';
 import { CartService } from '../../services/cart.service';
 import { BadgeModule } from 'primeng/badge';
 import { OrderService } from '../../services/order.service';
-import { Order } from '../../models/order.model';
+import { NewOrder } from '../../models/order.model';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-cart',
@@ -28,6 +29,7 @@ import { Order } from '../../models/order.model';
     TagModule,
     FormsModule,
     InputNumberModule,
+    InputTextModule,
     DropdownModule,
     BadgeModule,
     CommonModule
@@ -40,9 +42,13 @@ export class CartComponent implements OnInit {
   sidebarVisible: boolean = false;
   cartItemCount = 0;
   products: ProductCart[] = [];
-  addresses: string[] = [];
-  selectedAddress: string = "";
-  order: Order | undefined;
+  customerName: string = "";
+  address: string = "";
+  order: NewOrder = {
+    customerName: '',
+    address: '',
+    products: []
+  };
 
   constructor(private cartService: CartService, private orderService: OrderService, private messageService: MessageService) { }
 
@@ -66,10 +72,22 @@ export class CartComponent implements OnInit {
   }
 
   sendOrder(): void {
-    // // TODO based on API
-    // this.orderService.addOrder(this.order).subscribe({
-    //   next: () => this.showFeedbackMessage('success', 'Success', 'Your order has been sent'),
-    //   error: () => this.showFeedbackMessage('error', 'Error', 'Could not send the order, please try again later.')
-    // })
+    this.order.customerName = this.customerName;
+    this.order.address = this.address;
+
+    this.products.forEach(product => {
+      this.order.products.push({id: product.id, quantity: product.quantity});
+    });
+
+    this.orderService.addOrder(this.order).subscribe({
+      next: () => this.showFeedbackMessage('success', 'Success', 'Your order has been sent'),
+      error: () => this.showFeedbackMessage('error', 'Error', 'Could not send the order, please try again later.')
+    });
+
+    this.cartService.clearCart();
+  }
+
+  validateInputs(): boolean {
+    return !(this.customerName.length < 1 || this.address.length < 1);
   }
 }

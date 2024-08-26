@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Order, ProductOrder } from '../../models/order.model';
+import { OrderProduct, OrderProducts } from '../../models/order.model';
 import { DataViewModule } from 'primeng/dataview';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
@@ -26,9 +26,9 @@ import { ToastModule } from 'primeng/toast';
   providers: [MessageService]
 })
 export class OrdersComponent implements OnInit {
-  orders: Order[] = [];
+  orders: OrderProducts[] = [];
   totalRecords: number = 0;
-  statusList: string[] = ['Ordered', 'Processing', 'Shipped', 'Delivered'];
+  statusList: string[] = ['received', 'processing', 'shipped', 'delivered'];
 
   constructor(private orderService: OrderService, private messageService: MessageService) { }
 
@@ -39,7 +39,18 @@ export class OrdersComponent implements OnInit {
   getOrders(page: number, size: number): void {
     this.orderService.getOrders(page, size).subscribe({
       next: (response) => {
-        this.orders = response.content;
+        const ordersResponse: OrderProducts[] = response.content as OrderProducts[];
+        
+        ordersResponse.forEach(order => {
+          this.orderService.getOrderProducts(order.id).subscribe({
+            next: (res) => order.products = res,
+            error: (error) => {
+              throw new Error(error)
+            }
+          })
+        });
+
+        this.orders = ordersResponse;
         this.totalRecords = response.totalElements;
       },
       error: () => this.showFeedbackMessage('error', 'Error', 'Unable to load orders, please try again later.')
@@ -54,8 +65,8 @@ export class OrdersComponent implements OnInit {
     return format(date, 'MM/dd/yyyy - HH:mm');
   }
 
-  getTotalPrice(products: ProductOrder[]): number {
-    return products.reduce((total, item) => total + (item.price * item.quantity), 0);
+  getTotalPrice(products: OrderProduct[]): number {
+    return products?.reduce((total, item) => total + (item.product.price * item.quantity), 0);
   }
 
   getStatusIcon(status: String): String {
