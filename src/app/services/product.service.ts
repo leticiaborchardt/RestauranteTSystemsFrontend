@@ -13,14 +13,13 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
   getProducts(page: number, size: number, categoryId?: number, minPrice?: number, maxPrice?: number): Observable<PagedResponse<Product>> {
-    let params = new HttpParams();
+    let params = new HttpParams()
+      .set('page', page)
+      .set('size', size);
 
     if (categoryId) params = params.set('category', categoryId);
     if (minPrice !== undefined && minPrice !== null) params = params.set('price_le', minPrice.toString());
     if (maxPrice !== undefined && maxPrice !== null) params = params.set('price_ge', maxPrice.toString());
-
-    params = params.set('page', page);
-    params = params.set('size', size);
 
     return this.http.get<PagedResponse<Product>>(this.url, { params });
   }
