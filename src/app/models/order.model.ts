@@ -1,7 +1,7 @@
-export interface ProductOrder {
-    id: number,
-    name: string,
-    price: number,
+import { Product } from "./product.model";
+
+export interface OrderProduct {
+    product: Product,
     quantity: number
 }
 
@@ -11,6 +11,10 @@ export interface Order {
     address: string
     status: string
     createdAt: Date
+}
+
+export interface OrderProducts extends Order {
+    products: OrderProduct[]
 }
 
 export interface NewProductOrder {

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { NewOrder, Order } from '../models/order.model';
+import { NewOrder, Order, OrderProduct } from '../models/order.model';
 import { PagedResponse } from '../models/paged-response.model';
 
 @Injectable({
@@ -14,6 +14,10 @@ export class OrderService {
 
   getOrders(page: number, size: number): Observable<PagedResponse<Order>> {
     return this.http.get<PagedResponse<Order>>(`${this.url}?page=${page}&size=${size}`);
+  }
+
+  getOrderProducts(orderId: number): Observable<OrderProduct[]> {
+    return this.http.get<OrderProduct[]>(`${this.url}/${orderId}/products`);
   }
 
   addOrder(order: NewOrder): Observable<NewOrder> {
