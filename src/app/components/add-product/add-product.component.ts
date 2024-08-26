@@ -76,6 +76,7 @@ export class AddProductComponent implements OnInit {
           this.showFeedbackMessage('success', 'Success', 'Item created successfully!');
           this.dialogVisible = false;
           this.sendingForm = false;
+          window.location.reload();
         },
         error: () => {
           this.showFeedbackMessage('error', 'Error', 'Could not create item, please try again later.');

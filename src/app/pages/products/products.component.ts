@@ -12,6 +12,13 @@ import { ToastModule } from 'primeng/toast';
 import { CartService } from '../../services/cart.service';
 import { ProductService } from '../../services/product.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { DropdownModule } from 'primeng/dropdown';
+import { Category } from '../../models/category.model';
+import { CategoryService } from '../../services/category.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-products',
@@ -25,7 +32,13 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     RouterLink,
     AddProductComponent,
     ToastModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    FormsModule,
+    InputTextModule,
+    InputNumberModule,
+    FloatLabelModule,
+    DropdownModule,
+    CommonModule
   ],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
@@ -36,15 +49,26 @@ export class ProductsComponent implements OnInit {
   totalRecords: number = 0;
   productImageLoaded: boolean = true;
   isManagingProducts: boolean = false;
+  categoryOptionsSearch: Category[] = [];
+  categorySearch?: Category;
+  minPriceSearch?: number;
+  maxPriceSearch?: number;
 
-  constructor(private productService: ProductService, private confirmationService: ConfirmationService, private cartService: CartService, private messageService: MessageService) { }
+  constructor(
+    private productService: ProductService, 
+    private categoryService: CategoryService,
+    private cartService: CartService, 
+    private confirmationService: ConfirmationService, 
+    private messageService: MessageService
+  ) { }
 
   ngOnInit(): void {
+    this.getCategoryOptionsSearch();
     this.getProducts(0, 10);
   }
 
   getProducts(page: number, size: number): void {
-    this.productService.getProducts(page, size).subscribe({
+    this.productService.getProducts(page, size, this.categorySearch?.id, this.minPriceSearch, this.maxPriceSearch).subscribe({
       next: (response) => {
         this.products = response.content;
         this.totalRecords = response.totalElements;
@@ -87,6 +111,21 @@ export class ProductsComponent implements OnInit {
     });
   }
 
+  getCategoryOptionsSearch(): void {
+    this.categoryService.getCategories().subscribe({
+      next: (response) => this.categoryOptionsSearch = response,
+      error: () => this.showFeedbackMessage('error', 'Error', 'Unable to load categories, please try again later.')
+    });
+  }
+
+  clearFilters() {
+    this.categorySearch = undefined;
+    this.minPriceSearch = undefined;
+    this.maxPriceSearch = undefined;
+
+    this.getProducts(0, 10);
+  }
+
   onPageChange(event: any) {
     this.getProducts(event.first / event.rows, event.rows);
   }
@@ -95,8 +134,8 @@ export class ProductsComponent implements OnInit {
     return this.cartService.getProductById(id) != null;
   }
 
-  manageProducts(): void {
-    this.isManagingProducts = true;
+  toggleManageProducts(): void {
+    this.isManagingProducts = !this.isManagingProducts;
   }
 
   showFeedbackMessage(severity: string, title: string, message: string) {

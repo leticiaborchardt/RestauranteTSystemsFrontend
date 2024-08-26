@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NewProduct, Product } from '../models/product.model';
 import { Observable } from 'rxjs';
@@ -12,8 +12,17 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  getProducts(page: number, size: number): Observable<PagedResponse<Product>> {
-    return this.http.get<PagedResponse<Product>>(`${this.url}?page=${page}&size=${size}`);
+  getProducts(page: number, size: number, categoryId?: number, minPrice?: number, maxPrice?: number): Observable<PagedResponse<Product>> {
+    let params = new HttpParams();
+
+    if (categoryId) params = params.set('category', categoryId);
+    if (minPrice !== undefined && minPrice !== null) params = params.set('price_le', minPrice.toString());
+    if (maxPrice !== undefined && maxPrice !== null) params = params.set('price_ge', maxPrice.toString());
+
+    params = params.set('page', page);
+    params = params.set('size', size);
+
+    return this.http.get<PagedResponse<Product>>(this.url, { params });
   }
 
   addProduct(product: NewProduct): Observable<Product> {
